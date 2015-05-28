@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"io/ioutil"
 	"log"
+	"mime"
 	"net/http"
 	"os"
 	"strings"
@@ -19,6 +20,11 @@ type Config struct {
 
 type Server struct {
 	Config Config
+}
+
+// to display svgs proplery (see https://code.google.com/p/go/issues/detail?id=6378)
+func init() {
+	mime.AddExtensionType(".svg", "image/svg+xml")
 }
 
 func (s *Server) HTTPHandler() http.Handler {
