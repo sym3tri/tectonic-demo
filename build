@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+CGO_ENABLED=0 go build -a -tags netgo -ldflags '-w' -o bin/demo github.com/sym3tri/tectonic-demo/cmd/demo

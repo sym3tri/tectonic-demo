@@ -1,0 +1,24 @@
+#!/bin/bash -e
+
+# docker build, tag, and push a docker image to repository.
+
+IMAGE_TAG=$1
+REGISTRY=quay.io
+REPO=$REGISTRY/sym3tri/demo
+
+if [ -v $DOCKER_USER ] || [ -v $DOCKER_PASSWORD ]; then
+    echo "env variables not set: DOCKER_USER, DOCKER_PASSWORD. skipping login, assuming creds in .dockercfg"
+else
+    echo logging in as $DOCKER_USER
+    docker login --username="$DOCKER_USER" --password="$DOCKER_PASSWORD" --email="docker.login@doesnt-matter.com" $REGISTRY
+fi
+
+GIT_SHA=$(git rev-parse HEAD)
+
+docker build -q --rm=true -t $REPO:$GIT_SHA .
+docker push $REPO:$GIT_SHA
+
+if [ -n "$IMAGE_TAG" ]; then
+  docker tag -f $REPO:$GIT_SHA $REPO:$IMAGE_TAG
+  docker push $REPO:$IMAGE_TAG
+fi
