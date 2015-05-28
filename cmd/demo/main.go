@@ -11,7 +11,7 @@ import (
 	"github.com/sym3tri/tectonic-demo/server"
 )
 
-const version = "v1.0"
+const version = "v2.0"
 
 func main() {
 	fs := flag.NewFlagSet("demo", flag.ExitOnError)
